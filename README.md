@@ -4,9 +4,9 @@ This is async chat with following options:
 - Client's commands:
 1. Send file:
 
-[send_file][here_should_be_receiver_username]
+	[send_file][here_should_be_receiver_username]
 
-[send_file][ok][here_should_be_requester_username]
+	[send_file][ok][here_should_be_requester_username]
 
 3. Private chat:
 
