@@ -43,6 +43,7 @@ class Client:
             try:
                 await self._messages.append("[system] Write the file name here or type exit.\n")
                 _filename  = await read_line(stdin_reader)
+                sys.stdout.flush()
         
                 if _filename == "exit":
                     filename[0]  = None
