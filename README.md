@@ -24,11 +24,13 @@ This is async chat with following options:
 ----------------------------------------------------
 - Server's commands for:
 1. Providing common info:
+   
 1.1. online: online users
 1.2. banned: banned users
 1.3. ports: free ports
 
-2. Showing active sessions:
+3. Showing active sessions:
+
 2.1. file: sending files
 2.2. private: private
 2.3. shell: reverse shell
