@@ -1912,7 +1912,7 @@ class Server:
                 if self._reverse_shell_tmp.get(dst_username, 0) and self._reverse_shell_tmp[dst_username]["receiver"] == src_username:
                     return 1
                 else:
-                    message = f"[system][protocol_s_file][rccancel]\n"
+                    message = f"[system][protocol_shell][rccancel]\n"
                     await self._write_direct(self._username_to_writer[src_username], message)
                     message_detail = "reverse shell" 
                     message = f"[system][server] There is no such {message_detail} request.\n"
