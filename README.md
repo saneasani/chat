@@ -3,22 +3,26 @@ This is async chat with following options:
 ----------------------------------------------------
 - Client's commands:
 1. Send file:
-[send_file][here_should_be_receiver_username]		
+[send_file][here_should_be_receiver_username]
+
 [send_file][ok][here_should_be_requester_username]
 
-2. Private chat:
-[p][here_should_be_receiver_username]		
+3. Private chat:
+[p][here_should_be_receiver_username]
+
 [p][ok][here_should_be_requester_username]
 
-3. Reverse shell:
-[r_shell][here_should_be_receiver_username]		
+5. Reverse shell:
+[r_shell][here_should_be_receiver_username]
+	
 [r_shell][ok][here_should_be_requester_username]
 
-4. Show online in private/global chat:
+7. Show online in private/global chat:
 [online]
 
-5. ban/unban:
+8. ban/unban:
 [ban][target_username]
+
 [unban][target_username]
 
 ----------------------------------------------------
