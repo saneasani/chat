@@ -1247,7 +1247,6 @@ class Server:
 
 
                                 message = f"[system] {requester_name} sent you reverse shell session: type [r_shell][ok][{_requester_name}] or forget it.\n"
-                                # message = f"[system][server] {_requester_name} send you shell.\n"
                                 await self._write_direct(self._username_to_writer[receiver_name], message)
 
                                 # task for reverse shell will be created later in this function:
@@ -1846,20 +1845,17 @@ class Server:
             if scope == "private": # if message came from private chat, user wants to switch in other private chat.
                 message = f"[system][server] You are already have private chat with this username: {dst_username}.\n"
                 if purpose == "[p]":    
-                    if self._private_chat_db.get(src_username, 0) and self._private_chat_db[src_username]["receiver"] == dst_username:
-                        
+                    if self._private_chat_db.get(src_username, 0) and self._private_chat_db[src_username]["receiver"] == dst_username:                   
                         await self._write_direct(self._username_to_writer[src_username], message)
                         return 0
                     
                     elif self._private_chat_db.get(dst_username, 0) and self._private_chat_db[dst_username]["receiver"] == src_username:
-                        #message = f"[system][server] You are already have private chat with this username: {dst_username}.\n"
                         await self._write_direct(self._username_to_writer[src_username], message)
                         return 0      
                         
                     
                 elif purpose == "[p][ok]":
                     if self._private_chat_db.get(dst_username, 0) and self._private_chat_db[dst_username]["receiver"] == src_username:
-                       # message = f"[system][server] You are already have private chat with this username: {dst_username}.\n"
                         await self._write_direct(self._username_to_writer[src_username], message)
                         return 0
 
@@ -2313,11 +2309,6 @@ class Server:
                             print(f"requester: {requester}, receiver : {self._reverse_shell_db[requester]['receiver']}")
                         print("---------------------------------------")
 
-
-                elif message == "exit":
-                    for task in self._added_tasks:
-                        print(task)
-            
 
                 elif message == "exit":
                     break
