@@ -10,25 +10,25 @@ This is async chat with following options:
 
 3. Private chat:
 
-[p][here_should_be_receiver_username]
+	[p][here_should_be_receiver_username]
 
-[p][ok][here_should_be_requester_username]
+	[p][ok][here_should_be_requester_username]
 
 5. Reverse shell:
 
-[r_shell][here_should_be_receiver_username]
+	[r_shell][here_should_be_receiver_username]
 	
-[r_shell][ok][here_should_be_requester_username]
+	[r_shell][ok][here_should_be_requester_username]
 
 7. Show online in private/global chat:
 
-[online]
+	[online]
 
 9. ban/unban:
    
-[ban][target_username]
+	[ban][target_username]
 
-[unban][target_username]
+	[unban][target_username]
 
 ----------------------------------------------------
 - Server's commands for:
