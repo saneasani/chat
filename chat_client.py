@@ -607,7 +607,6 @@ class Client:
                 stdin=asyncio.subprocess.PIPE,
             )
            
-            # check if can be runned app locally, not just check output
             while True:
                 await self._messages.append("[system] =========Browse local pc data===============\n")
                 # stdin
