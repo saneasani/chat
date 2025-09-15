@@ -48,7 +48,6 @@ This is async chat with following options:
 
 	2.3. shell: reverse shell
 
-For exit type: exit
 ----------------------------------------------------
 
 Works on Linux machine.
