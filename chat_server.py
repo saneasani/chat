@@ -3,7 +3,6 @@ import tty
 import tty
 import time
 import asyncio
-import logging
 from collections import deque
 from asyncio import StreamReader, StreamWriter, Future
 from tools.custom_readers import create_stdin_reader, read_line
