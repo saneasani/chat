@@ -2,7 +2,6 @@ import os
 import tty
 import time
 import asyncio
-import logging
 from collections import deque
 from asyncio import StreamReader, StreamWriter
 from tools.manage_shell import *
