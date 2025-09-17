@@ -174,10 +174,10 @@ class Server:
             print(f"[system][{time.strftime('%X %x')}] Accept file, requester name: {requester_name}, error: ", e)
             if not _time or not self._control_tasks[requester_name]["accept_name"].done():
                 self._control_tasks[requester_name]["accept_name"].cancel()
-
             await self._handle_exception_fsend_or_shell(requester_name, writer, "file")
 
-                
+
+         
     async def _send_to_receiver(self, reader: StreamReader, writer: StreamWriter, requester_name: str) -> None:
         _time = 30
         
@@ -304,11 +304,7 @@ class Server:
 
     async def _receiver_control_requester_shell(self,  requester_name: str) -> None:
         _time = 30
-        data = None
-        src_writer = None
-        dst_writer = None
         none_count = 0
-
 
         print(f"[system][{time.strftime('%X %x')}] Receiver control requester shell activated, requester name: {requester_name}")
   
@@ -352,7 +348,6 @@ class Server:
                                     if data == "exit\n":
                                         raise Exception("Exit command from src part, break task.")
 
-
                             except asyncio.exceptions.TimeoutError:
                                 print(f"[system] Time elsaped, no information from src in reversed shell, requester name: {requester_name}")
                                 data = None
@@ -365,12 +360,10 @@ class Server:
                             except Exception as e:
                                 print(f"[system] Common error from src_reader in receiver control requester shell, requester name: {requester_name}, error:", e)
                                 data = None
-
-
+                                
                             if data is None:
                                 break
-
-             
+           
                             try: # read output from dst reader's shell.
                                 while (data := await asyncio.wait_for(dst_reader.readline(), 5)) != b'':
                                     len_data = int(data)
@@ -429,7 +422,7 @@ class Server:
                 if _time:
                     _time -= 1
 
-                
+        
         except ConnectionError as e:
             print(f"[system][{time.strftime('%X %x')}] Receiver control requester Shell Connection error, requester: {requester_name}")                
 
@@ -474,7 +467,6 @@ class Server:
                 if not _time:
                     raise Exception("Time waiting receiver to accept shell elapsed")
                               
-
         except Exception as e:
             print(f"[system][{time.strftime('%X %x')}] Wait shell receiver, requester name: {requester_name}, error: ", e)
             
@@ -634,9 +626,9 @@ class Server:
                     count = 0
 
                     for writer in [writer_rq, writer_rc]:
+                        count += 1
                         try:
-                            if writer != None:
-                                count += 1
+                            if writer != None:                       
                                 writer.close()
                                 await writer.wait_closed()
 
@@ -647,13 +639,12 @@ class Server:
                     if self._shutdown_event_r_shell_db.get(requester_name, 0):
                         self._shutdown_event_r_shell_db[requester_name].set()
                         await asyncio.sleep(1)
-                         
-                            
+
+            
             if writer != None:
                 writer.close()
                 await writer.wait_closed()
-    
-                      
+             
         except Exception as e:
             print(f"[system] handle exception, purpose: {purpose}, requester: {requester_name}, error", e)
 
@@ -789,10 +780,10 @@ class Server:
 
     
     def _extract_name(self, name: str) -> str:
+        idx = 0
+        checked_name = ""
+        
         try:
-            idx = 0
-            checked_name = ""
-
             if name.startswith("[ban][del]"):
                 idx = 10         
             elif name.startswith("[ban]"):
@@ -1048,6 +1039,7 @@ class Server:
                 src_writer = self._private_chat_db[requester_name]["req_writer"]
                 dst_writer = self._private_chat_db[requester_name]["rec_writer"]
                 dst_username = self._private_chat_db[requester_name]["receiver"]
+                
         
             print(f"[{time.strftime('%X %x')}] Username: {src_username} switched to private chat with username: {dst_username}")
             message = f"[system][server] You are now in private mode with {dst_username}, just start write messages or for moving back to global chat type: [global]\n"
@@ -1324,7 +1316,6 @@ class Server:
             await self._close_socket_clear_from_server_private(src_username, src_writer)
          
         except asyncio.exceptions.CancelledError:
-            flag_cleared = True
             print(f"[system][{time.strftime('%X %x')}] Private listen message canceled for user: {src_username}")
             
 
@@ -1636,7 +1627,6 @@ class Server:
                                                                            "token": ""}
 
                                 message = f"[system] {requester_name} sent you reverse shell session: type [r_shell][ok][{requester_name}] or forget it.\n"
-                                #message = f"[system][server] {requester_name} send you shell.\n"
                                 await self._write_direct(self._username_to_writer[receiver_name], message)
 
                                 # task for reverse shell will be created later in this function:
@@ -2056,8 +2046,6 @@ class Server:
 
 
     async def _ping_users_to_check_if_they_online(self) -> None:
-        writer = None
-        username = None
         message = "[ping]\n"
         _time = 8
         
@@ -2172,12 +2160,10 @@ class Server:
             await self._remove_user(username)
             return 0
 
-
-  
-    # Gathering all tasks here:
+    
+    # Gathering all tasks for certain user here:
     async def _main(self, username: str, reader: StreamReader, writer: StreamWriter) -> None:
         try:  
-            self._added_tasks = []
             global_chat_task = asyncio.create_task(self._listen_for_messages(username, reader))
             self._added_tasks.append(global_chat_task)
             
@@ -2185,8 +2171,7 @@ class Server:
             self._control_tasks[username]["global_chat"] = global_chat_task
             
             print(f"[{time.strftime('%X %x')}] Username connected: {username}")
-
-            await asyncio.gather(*self._added_tasks)       
+            
 
         except Exception as e:
             print(f"[system][{time.strftime('%X %x')}] Main error: {username}, error:", e)
@@ -2205,9 +2190,7 @@ class Server:
 
             async with server:
                 await server.serve_forever()
-
-            
-
+                
         except Exception as e:
             print(f"[system][{time.strftime('%X %x')}] Start chat server, host:{host}, port: {port}, error:", e)
 
@@ -2220,16 +2203,16 @@ class Server:
             os.system('clear')
 
             print("========================================")
-            print("Hello, this is server terminal.\n")
+            print("Hello, this is server terminal.")
             print("These commands provides common info:")
-            print("1. online: online users")
-            print("2. banned: banned users")
-            print("3. ports: free ports\n")
+            print("1. online: online users.")
+            print("2. banned: banned users.")
+            print("3. ports: free ports.")
             print("These commands show active sessions:")
-            print("1. file: sending files")
-            print("2. private: private")
-            print("3. shell: reverse shell\n")
-            print("For exit type: exit")
+            print("1. file: sending files.")
+            print("2. private: private.")
+            print("3. shell: reverse shell.")
+            print("For exit type: exit.")
             print("=======================================")
 
             stdin_reader = await create_stdin_reader()
@@ -2320,21 +2303,15 @@ class Server:
             print(f"[system][{time.strftime('%X %x')}] Control server error:", e)
 
 
-    
-
-
 
 if __name__ == "__main__":
-    new_server = Server()
-    
+    new_server = Server()    
     async def main(server) -> None:   
         start_server_task = asyncio.create_task(server.start_chat_server('127.0.0.1', 8000))
         control_server_task = asyncio.create_task(server.control_server(server))
         ping_clients_task = asyncio.create_task(server._ping_users_to_check_if_they_online())
 
         await control_server_task
-
-
 
     try:
         asyncio.run(main(new_server))
@@ -2344,4 +2321,3 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt as e:
         print("\nHave a wonderful day!")
-
